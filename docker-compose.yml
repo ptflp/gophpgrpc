@@ -3,7 +3,7 @@ version: "3"
 services:
   #PHP Service
   app:
-    image: ptflp/phptest
+    image: ptflp/phptest:7.2.23
     container_name: app
     restart: unless-stopped
     tty: true
@@ -16,11 +16,10 @@ services:
       - ./conf/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
-
   #Nginx Service
   webserver:
     image: nginx:alpine
-    container_name: webserver
+    container_name: webproxytest
     restart: unless-stopped
     tty: true
     ports:
@@ -31,12 +30,21 @@ services:
       - ./conf/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
+  #GRPC golang Service
+  gogrpc:
+    image: ptflp/godelve
+    container_name: grpcserver
+    ports:
+      - 5813:5813
+    environment:
+      - PROJECT_PATH=/gohelloworld
+    restart: always
+    volumes:
+      - ./gohelloworld:/gohelloworld
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:
     driver: bridge
-
-#Volumes
-volumes:
-  dbdata:
-    driver: local
