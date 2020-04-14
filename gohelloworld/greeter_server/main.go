@@ -23,6 +23,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 
@@ -52,7 +53,7 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	fmt.Println("starting grpc server at port ", port)
+	err = s.Serve(lis)
+	log.Fatalf("failed to serve: %v", err)
 }

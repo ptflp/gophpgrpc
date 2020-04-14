@@ -37,7 +37,7 @@ services:
     ports:
       - 5813:5813
     environment:
-      - PROJECT_PATH=/gohelloworld
+      - PROJECT_PATH=/gohelloworld/greeter_server
     restart: always
     volumes:
       - ./gohelloworld:/gohelloworld
